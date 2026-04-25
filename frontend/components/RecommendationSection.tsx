@@ -7,7 +7,6 @@ import {
   CardContent,
   Chip,
   CircularProgress,
-  Divider,
   Paper,
   Stack,
   Typography,
@@ -46,16 +45,17 @@ export function RecommendationSection({
       }}
     >
       <Stack spacing={2}>
+        {/* 標題列 */}
         <Stack
           spacing={2}
-          sx={{
-            alignItems: "flex-start",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
+          sx={{ alignItems: "flex-start", flexDirection: "row", justifyContent: "space-between" }}
         >
           <Box>
-            <Typography color="success.dark" variant="caption" sx={{ fontWeight: 900, textTransform: "uppercase" }}>
+            <Typography
+              color="success.dark"
+              variant="caption"
+              sx={{ fontWeight: 900, textTransform: "uppercase" }}
+            >
               Recommendation
             </Typography>
             <Stack spacing={1} sx={{ alignItems: "center", flexDirection: "row" }}>
@@ -68,64 +68,102 @@ export function RecommendationSection({
           <Chip color="success" label="MVP 預覽" size="small" />
         </Stack>
 
+        {/* 推薦依據標籤 */}
         <Stack aria-label="目前推薦依據" sx={{ flexDirection: "row", flexWrap: "wrap", gap: 1 }}>
           {basisLabels.map((label) => (
             <Chip color="success" key={label} label={label} size="small" variant="outlined" />
           ))}
         </Stack>
 
+        {/* 載入中 */}
         {isLoading ? (
-          <Paper variant="outlined" sx={{ borderRadius: 2, p: 3 }}>
-            <Stack spacing={2} sx={{ alignItems: "center", flexDirection: "row" }}>
-              <CircularProgress color="success" size={24} />
-              <Typography color="text.secondary" sx={{ fontWeight: 700 }}>
-                推薦載入中...
-              </Typography>
-            </Stack>
-          </Paper>
+          <Stack spacing={2} sx={{ alignItems: "center", flexDirection: "row", py: 1 }}>
+            <CircularProgress color="success" size={20} />
+            <Typography color="text.secondary" variant="body2" sx={{ fontWeight: 700 }}>
+              推薦載入中...
+            </Typography>
+          </Stack>
         ) : null}
 
+        {/* 錯誤 */}
         {errorMessage ? <Alert severity="error">{errorMessage}</Alert> : null}
 
+        {/* 空狀態 */}
         {!isLoading && !errorMessage && recommendations.length === 0 ? (
-          <Paper variant="outlined" sx={{ borderRadius: 2, p: 3 }}>
-            <Typography color="text.secondary" sx={{ fontWeight: 700 }}>
-              目前尚無推薦商品。
-            </Typography>
-          </Paper>
+          <Typography color="text.secondary" variant="body2" sx={{ fontWeight: 700 }}>
+            目前尚無推薦商品。
+          </Typography>
         ) : null}
 
+        {/* 橫式卡片列 */}
         {!isLoading && !errorMessage && recommendations.length > 0 ? (
-          <Stack spacing={1.5}>
+          <Box
+            aria-label="推薦商品列表"
+            sx={{
+              display: "flex",
+              gap: 1.5,
+              overflowX: "auto",
+              pb: 1,
+              // 自訂捲軸樣式
+              "&::-webkit-scrollbar": { height: 6 },
+              "&::-webkit-scrollbar-track": { borderRadius: 3, bgcolor: "action.hover" },
+              "&::-webkit-scrollbar-thumb": { borderRadius: 3, bgcolor: "success.light" },
+            }}
+          >
             {recommendations.map((recommendation) => (
-              <Card key={recommendation.product.id} variant="outlined" sx={{ borderRadius: 2 }}>
-                <CardContent>
-                  <Stack spacing={1.25}>
-                    <Stack
-                      spacing={1}
+              <Card
+                key={recommendation.product.id}
+                variant="outlined"
+                sx={{
+                  borderRadius: 2,
+                  flexShrink: 0,
+                  width: 200,
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <CardContent sx={{ p: 1.5, "&:last-child": { pb: 1.5 }, flexGrow: 1 }}>
+                  <Stack spacing={1} sx={{ height: "100%" }}>
+                    {/* 商品名稱 */}
+                    <Typography
+                      component="h3"
+                      variant="body2"
                       sx={{
-                        alignItems: { xs: "flex-start", sm: "center" },
-                        flexDirection: { xs: "column", sm: "row" },
-                        justifyContent: "space-between",
+                        fontWeight: 900,
+                        display: "-webkit-box",
+                        WebkitBoxOrient: "vertical",
+                        WebkitLineClamp: 2,
+                        overflow: "hidden",
                       }}
                     >
-                      <Box>
-                        <Typography component="h3" variant="subtitle1" sx={{ fontWeight: 900 }}>
-                          {recommendation.product.name}
-                        </Typography>
-                        <Typography color="text.secondary" variant="body2">
-                          {recommendation.product.brand} / {recommendation.product.category}
-                        </Typography>
-                      </Box>
-                      <Typography color="error.main" sx={{ fontWeight: 900 }}>
-                        {priceFormatter.format(recommendation.product.price)}
-                      </Typography>
-                    </Stack>
-                    <Divider />
-                    <Stack component="ul" spacing={0.5} sx={{ m: 0, pl: 2.5 }}>
-                      {recommendation.reasons.map((reason) => (
-                        <Typography component="li" key={reason} color="text.secondary" variant="body2">
-                          {reason}
+                      {recommendation.product.name}
+                    </Typography>
+
+                    {/* 品牌 / 分類 */}
+                    <Typography color="text.secondary" variant="caption">
+                      {recommendation.product.brand} · {recommendation.product.category}
+                    </Typography>
+
+                    {/* 價格 */}
+                    <Typography color="error.main" variant="body2" sx={{ fontWeight: 900 }}>
+                      {priceFormatter.format(recommendation.product.price)}
+                    </Typography>
+
+                    {/* 推薦理由（最多顯示 2 條） */}
+                    <Stack spacing={0.5} sx={{ mt: "auto" }}>
+                      {recommendation.reasons.slice(0, 2).map((reason) => (
+                        <Typography
+                          key={reason}
+                          color="text.secondary"
+                          variant="caption"
+                          sx={{
+                            display: "-webkit-box",
+                            WebkitBoxOrient: "vertical",
+                            WebkitLineClamp: 1,
+                            overflow: "hidden",
+                          }}
+                        >
+                          · {reason}
                         </Typography>
                       ))}
                     </Stack>
@@ -133,7 +171,7 @@ export function RecommendationSection({
                 </CardContent>
               </Card>
             ))}
-          </Stack>
+          </Box>
         ) : null}
       </Stack>
     </Paper>
