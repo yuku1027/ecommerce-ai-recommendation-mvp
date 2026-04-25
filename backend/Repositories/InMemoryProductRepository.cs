@@ -69,7 +69,7 @@ public sealed class InMemoryProductRepository : IProductRepository
             Category = "穿戴裝置",
             Brand = "FitPlus",
             Price = 1690m,
-            ImageUrl = "https://images.unsplash.com/photo-1575311373937-040b8e1fd6b0",
+            ImageUrl = "https://images.unsplash.com/photo-1579586337278-3befd40fd17a",
             Popularity = 82,
             Rating = 4.3m
         },

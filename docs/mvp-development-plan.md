@@ -211,17 +211,17 @@ Tasks：
 
 Tasks：
 
-- [ ] `FE-001` 建立首頁 `app/page.tsx`。
-- [ ] `FE-002` 建立共用型別 `types/product.ts`。
-- [ ] `FE-003` 建立共用型別 `types/recommendation.ts`。
-- [ ] `FE-004` 建立 `ProductCard`。
-- [ ] `FE-005` 建立 `ProductGrid`。
-- [ ] `FE-006` 建立 `RecommendationSection`。
-- [ ] `FE-007` 建立 `BehaviorPanel`，顯示：最近瀏覽商品（最多 3 筆名稱）、目前搜尋關鍵字、購物車商品數量。
-- [ ] `FE-008` 建立基本 responsive layout。
-- [ ] `FE-009` 建立 loading / empty / error 狀態。
-- [ ] `FE-009a` 建立 `SearchBar` 元件，支援輸入關鍵字並觸發行為記錄。
-- [ ] `FE-009b` 建立 `CategoryFilter` 元件，支援點擊分類標籤並觸發行為記錄。
+- [x] `FE-001` 建立首頁 `app/page.tsx`。
+- [x] `FE-002` 建立共用型別 `types/product.ts`。
+- [x] `FE-003` 建立共用型別 `types/recommendation.ts`。
+- [x] `FE-004` 建立 `ProductCard`。
+- [x] `FE-005` 建立 `ProductGrid`。
+- [x] `FE-006` 建立 `RecommendationSection`。
+- [x] `FE-007` 建立 `BehaviorPanel`，顯示：最近瀏覽商品（最多 3 筆名稱）、目前搜尋關鍵字、購物車商品數量。
+- [x] `FE-008` 建立基本 responsive layout。
+- [x] `FE-009` 建立 loading / empty / error 狀態。
+- [x] `FE-009a` 建立 `SearchBar` 元件，支援輸入關鍵字並觸發行為記錄。
+- [x] `FE-009b` 建立 `CategoryFilter` 元件，支援點擊分類標籤並觸發行為記錄。
 
 完成條件：
 
@@ -230,6 +230,34 @@ Tasks：
 - 手機與桌機基本可用。
 - SearchBar 與 CategoryFilter 可操作，操作後推薦依據改變。
 - BehaviorPanel 可清楚顯示目前行為狀態（讓面試官直接看到「行為 → 推薦」的對應關係）。
+
+執行紀錄：
+
+- 已將首頁改為可操作的購物推薦頁，而非 landing page。
+- 已建立 `Product`、`Recommendation` 與 `BehaviorState` 共用型別。
+- 已建立 `ProductCard`、`ProductGrid`、`RecommendationSection`、`BehaviorPanel`、`SearchBar`、`CategoryFilter`。
+- 已建立 Phase 3 前端 mock 商品資料，維持與後端商品欄位一致，供 UI skeleton 使用；Phase 4 會改由 API 取得資料。
+- 已建立桌機與手機 RWD 版面：桌機為主內容 + 右側行為面板，平板/手機改為單欄排列。
+- SearchBar、CategoryFilter、商品查看與加入購物車皆可更新前端行為狀態；推薦區顯示目前推薦依據。
+- ProductGrid 與 RecommendationSection 已具備 loading / empty / error 狀態元件分支。
+- 已設定 Next.js remote image host，商品圖片可透過 `next/image` 顯示。
+- 已改用 Material UI 實作主要前端元件，包含 `AppBar`、`Card`、`Chip`、`TextField`、`Paper`、`Switch`、`Rating` 等。
+- 已新增頁首 Header、頁尾 Footer 與 light / dark theme 切換功能，theme 會寫入 `localStorage` 保留使用者偏好。
+
+驗證紀錄：
+
+- `npm run lint`：通過。
+- `npm run build`：通過。
+- `dotnet build`：通過，0 warnings / 0 errors（同步更新後端 mock 圖片 URL 後重驗）。
+- Playwright 桌機截圖：`1440x1100`，確認商品列表、推薦區、行為面板與圖片正常顯示，無明顯重疊。
+- Playwright 手機截圖：`390x900`，確認單欄排列、分類橫向捲動、商品卡與行為面板可閱讀，無明顯重疊。
+- Playwright 深色主題截圖：`1440x1100`，確認 theme toggle 後深色模式可正常套用，無明顯重疊。
+
+無法完成或待注意事項：
+
+- Phase 3 尚未串接後端 API，商品與推薦資料仍為前端 mock preview；Phase 4 會建立 API client 並改由 `GET /api/products` 與 `POST /api/recommendations` 更新資料。
+- 目前推薦區不在前端實作 scoring，只顯示 MVP 預覽與目前推薦依據，以遵守「前端不直接寫 scoring 邏輯」的邊界。
+- 本機已有 Next dev server 佔用 `http://localhost:3000`，RWD 驗證直接使用該既有 server。
 
 ---
 

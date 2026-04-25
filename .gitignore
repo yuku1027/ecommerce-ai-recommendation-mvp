@@ -11,3 +11,6 @@
 
 # Local env
 **/.env.local
+
+# Local verification artifacts
+**/output/playwright/
