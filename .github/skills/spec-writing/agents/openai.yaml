@@ -1,0 +1,4 @@
+interface:
+  display_name: "Spec Writing"
+  short_description: "Write implementation-ready Traditional Chinese specs."
+  default_prompt: "Use $spec-writing to draft a complete Traditional Chinese feature spec in Markdown and save it in the current directory."

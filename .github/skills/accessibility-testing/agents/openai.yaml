@@ -1,0 +1,3 @@
+interface:
+  display_name: "Accessibility Testing"
+  short_description: "為 React 元件建立無障礙測試與報告"
