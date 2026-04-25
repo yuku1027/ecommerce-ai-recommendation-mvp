@@ -138,6 +138,154 @@ public sealed class InMemoryProductRepository : IProductRepository
             ImageUrl = "https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb",
             Popularity = 80,
             Rating = 4.2m
+        },
+
+        // 耳機第 3 筆
+        new()
+        {
+            Id = "p-013",
+            Name = "SoundMax 入耳式有線耳機",
+            Category = "耳機",
+            Brand = "SoundMax",
+            Price = 790m,
+            ImageUrl = "https://images.unsplash.com/photo-1590658268037-6bf12165a8df",
+            Popularity = 78,
+            Rating = 4.1m
+        },
+
+        // 手機第 3 筆
+        new()
+        {
+            Id = "p-014",
+            Name = "PixelMate Lite 輕薄智慧手機",
+            Category = "手機",
+            Brand = "PixelMate",
+            Price = 7990m,
+            ImageUrl = "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd",
+            Popularity = 84,
+            Rating = 4.3m
+        },
+
+        // 穿戴裝置第 3 筆
+        new()
+        {
+            Id = "p-015",
+            Name = "FitPlus 健康監測智慧戒指",
+            Category = "穿戴裝置",
+            Brand = "FitPlus",
+            Price = 2990m,
+            ImageUrl = "https://images.unsplash.com/photo-1547996160-81dfa63595aa",
+            Popularity = 81,
+            Rating = 4.4m
+        },
+
+        // 家電第 3 筆
+        new()
+        {
+            Id = "p-016",
+            Name = "HomeChef 多功能電子鍋",
+            Category = "家電",
+            Brand = "HomeChef",
+            Price = 2490m,
+            ImageUrl = "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136",
+            Popularity = 87,
+            Rating = 4.6m
+        },
+
+        // 筆電第 3 筆
+        new()
+        {
+            Id = "p-017",
+            Name = "WorkPro 13 吋商務超薄筆電",
+            Category = "筆電",
+            Brand = "WorkPro",
+            Price = 22900m,
+            ImageUrl = "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89",
+            Popularity = 83,
+            Rating = 4.3m
+        },
+
+        // 手機配件第 3 筆
+        new()
+        {
+            Id = "p-018",
+            Name = "ChargeGo 15W 磁吸無線充電盤",
+            Category = "手機配件",
+            Brand = "ChargeGo",
+            Price = 990m,
+            ImageUrl = "https://images.unsplash.com/photo-1583394838336-acd977736f90",
+            Popularity = 82,
+            Rating = 4.4m
+        },
+
+        // 個人護理（新分類）
+        new()
+        {
+            Id = "p-019",
+            Name = "OralCare 音波電動牙刷",
+            Category = "個人護理",
+            Brand = "OralCare",
+            Price = 1990m,
+            ImageUrl = "https://images.unsplash.com/photo-1559591937-95b0d9ec6e67",
+            Popularity = 88,
+            Rating = 4.6m
+        },
+        new()
+        {
+            Id = "p-020",
+            Name = "SilkPro 負離子速乾吹風機",
+            Category = "個人護理",
+            Brand = "SilkPro",
+            Price = 3290m,
+            ImageUrl = "https://images.unsplash.com/photo-1522338242992-e1a54906a8da",
+            Popularity = 85,
+            Rating = 4.5m
+        },
+        new()
+        {
+            Id = "p-021",
+            Name = "PureSkin 音波潔顏儀",
+            Category = "個人護理",
+            Brand = "PureSkin",
+            Price = 2490m,
+            ImageUrl = "https://images.unsplash.com/photo-1556228720-195a672e8a03",
+            Popularity = 79,
+            Rating = 4.3m
+        },
+
+        // 居家香氛（新分類）
+        new()
+        {
+            Id = "p-022",
+            Name = "AromaLife 超音波水氧擴香機",
+            Category = "居家香氛",
+            Brand = "AromaLife",
+            Price = 1490m,
+            ImageUrl = "https://images.unsplash.com/photo-1527574327770-4b51fd3a7c3c",
+            Popularity = 86,
+            Rating = 4.5m
+        },
+        new()
+        {
+            Id = "p-023",
+            Name = "CandleHouse 大豆精油香氛蠟燭",
+            Category = "居家香氛",
+            Brand = "CandleHouse",
+            Price = 590m,
+            ImageUrl = "https://images.unsplash.com/photo-1603006938481-680c64f85f8e",
+            Popularity = 83,
+            Rating = 4.4m
+        },
+        new()
+        {
+            Id = "p-024",
+            Name = "AromaLife 天然竹炭擴香石組",
+            Category = "居家香氛",
+            Brand = "AromaLife",
+            Price = 890m,
+            ImageUrl = "https://images.unsplash.com/photo-1607006344380-b6775a0824a7",
+            Popularity = 77,
+            Rating = 4.2m
         }
     ];
 
