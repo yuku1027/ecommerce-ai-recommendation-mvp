@@ -22,6 +22,8 @@
 - 負責接收參數、基本 model validation、呼叫 Service。
 - 不可直接存取 Repository。
 - 不可包含推薦 scoring 商業邏輯。
+- 新增或修改 Controller 時，需補上 API 相對說明，包含 controller/action 的 XML summary、必要 remarks、參數說明與主要 `ProducesResponseType`。
+- API 說明需能被 Swagger / OpenAPI 讀取，讓 `/swagger` 可清楚呈現 API list、用途、參數與回應狀態。
 
 ### Service
 
