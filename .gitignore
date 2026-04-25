@@ -15,3 +15,6 @@
 # Local verification artifacts
 **/output/playwright/
 **/test-results/
+.github/skills/playwright-skill/reports/
+.github/skills/playwright-skill/.temp-*.js
+.github/skills/playwright-skill/e2e-test.js
