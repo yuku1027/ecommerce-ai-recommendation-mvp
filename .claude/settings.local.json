@@ -5,7 +5,14 @@
       "Bash(git commit:*)",
       "Bash(npm install:*)",
       "Bash(npm run:*)",
-      "Bash(dotnet build:*)"
+      "Bash(dotnet build:*)",
+      "Bash(curl -s http://localhost:5163/health)",
+      "Bash(curl:*)",
+      "Bash(node run.js e2e-test.js)",
+      "Bash(pkill -f \"dotnet run\")",
+      "Bash(pkill -f \"next dev\")",
+      "Skill(commit-msg)",
+      "Bash(git push:*)"
     ]
   }
 }
