@@ -14,3 +14,4 @@
 
 # Local verification artifacts
 **/output/playwright/
+**/test-results/
