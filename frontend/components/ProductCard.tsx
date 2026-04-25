@@ -1,5 +1,5 @@
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import type { Product } from "@/types/product";
 import {
   Box,
@@ -18,7 +18,7 @@ type ProductCardProps = {
   product: Product;
   isViewed: boolean;
   isInCart: boolean;
-  onView: (product: Product) => void;
+  onOpenDetail: (product: Product) => void;
   onAddToCart: (product: Product) => void;
 };
 
@@ -32,25 +32,25 @@ export function ProductCard({
   product,
   isViewed,
   isInCart,
-  onView,
+  onOpenDetail,
   onAddToCart,
 }: ProductCardProps) {
   return (
     <Card
       variant="outlined"
       sx={{
+        borderRadius: 2,
         display: "flex",
         flexDirection: "column",
         height: "100%",
-        borderRadius: 2,
         overflow: "hidden",
       }}
     >
       <CardMedia
+        alt={product.name}
         component="img"
         image={product.imageUrl}
-        alt={product.name}
-        onClick={() => onView(product)}
+        onClick={() => onOpenDetail(product)}
         sx={{
           aspectRatio: "4 / 3",
           bgcolor: "action.hover",
@@ -71,8 +71,9 @@ export function ProductCard({
 
         <Typography
           component="h3"
-          sx={{ minHeight: 48, lineHeight: 1.45, fontWeight: 800 }}
+          sx={{ cursor: "pointer", fontWeight: 800, lineHeight: 1.45, minHeight: 48 }}
           variant="subtitle1"
+          onClick={() => onOpenDetail(product)}
         >
           {product.name}
         </Typography>
@@ -85,7 +86,11 @@ export function ProductCard({
             <Typography color="error.main" sx={{ fontWeight: 900 }} variant="h6">
               {priceFormatter.format(product.price)}
             </Typography>
-            <Typography color="text.secondary" sx={{ alignSelf: "end", fontWeight: 700 }} variant="caption">
+            <Typography
+              color="text.secondary"
+              sx={{ alignSelf: "end", fontWeight: 700 }}
+              variant="caption"
+            >
               熱度 {product.popularity}
             </Typography>
           </Stack>
@@ -95,11 +100,12 @@ export function ProductCard({
       <CardActions sx={{ gap: 1, p: 2, pt: 0 }}>
         <Button
           fullWidth
-          startIcon={<VisibilityIcon />}
+          color={isViewed ? "primary" : "inherit"}
+          startIcon={<OpenInNewIcon />}
           variant={isViewed ? "contained" : "outlined"}
-          onClick={() => onView(product)}
+          onClick={() => onOpenDetail(product)}
         >
-          {isViewed ? "已瀏覽" : "查看"}
+          {isViewed ? "已瀏覽" : "查看詳情"}
         </Button>
         <Button
           fullWidth

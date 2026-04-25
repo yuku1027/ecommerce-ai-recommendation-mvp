@@ -6,8 +6,9 @@ import {
   Card,
   CardContent,
   Chip,
-  CircularProgress,
+  LinearProgress,
   Paper,
+  Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
@@ -24,6 +25,31 @@ const priceFormatter = new Intl.NumberFormat("zh-TW", {
   currency: "TWD",
   maximumFractionDigits: 0,
 });
+
+// 理論最高分 = 40+25+30+20+15+20 = 150
+const MAX_SCORE = 150;
+
+function SkeletonCard() {
+  return (
+    <Box
+      sx={{
+        border: 1,
+        borderColor: "divider",
+        borderRadius: 2,
+        flexShrink: 0,
+        p: 1.5,
+        width: 200,
+      }}
+    >
+      <Skeleton variant="text" width="80%" sx={{ mb: 0.5 }} />
+      <Skeleton variant="text" width="60%" sx={{ mb: 1 }} />
+      <Skeleton variant="text" width="50%" sx={{ mb: 1 }} />
+      <Skeleton variant="rounded" height={6} sx={{ mb: 1 }} />
+      <Skeleton variant="text" width="90%" />
+      <Skeleton variant="text" width="75%" />
+    </Box>
+  );
+}
 
 export function RecommendationSection({
   recommendations,
@@ -75,16 +101,6 @@ export function RecommendationSection({
           ))}
         </Stack>
 
-        {/* 載入中 */}
-        {isLoading ? (
-          <Stack spacing={2} sx={{ alignItems: "center", flexDirection: "row", py: 1 }}>
-            <CircularProgress color="success" size={20} />
-            <Typography color="text.secondary" variant="body2" sx={{ fontWeight: 700 }}>
-              推薦載入中...
-            </Typography>
-          </Stack>
-        ) : null}
-
         {/* 錯誤 */}
         {errorMessage ? <Alert severity="error">{errorMessage}</Alert> : null}
 
@@ -95,84 +111,118 @@ export function RecommendationSection({
           </Typography>
         ) : null}
 
-        {/* 橫式卡片列 */}
-        {!isLoading && !errorMessage && recommendations.length > 0 ? (
-          <Box
-            aria-label="推薦商品列表"
-            sx={{
-              display: "flex",
-              gap: 1.5,
-              overflowX: "auto",
-              pb: 1,
-              // 自訂捲軸樣式
-              "&::-webkit-scrollbar": { height: 6 },
-              "&::-webkit-scrollbar-track": { borderRadius: 3, bgcolor: "action.hover" },
-              "&::-webkit-scrollbar-thumb": { borderRadius: 3, bgcolor: "success.light" },
-            }}
-          >
-            {recommendations.map((recommendation) => (
-              <Card
-                key={recommendation.product.id}
-                variant="outlined"
-                sx={{
-                  borderRadius: 2,
-                  flexShrink: 0,
-                  width: 200,
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <CardContent sx={{ p: 1.5, "&:last-child": { pb: 1.5 }, flexGrow: 1 }}>
-                  <Stack spacing={1} sx={{ height: "100%" }}>
-                    {/* 商品名稱 */}
-                    <Typography
-                      component="h3"
-                      variant="body2"
-                      sx={{
-                        fontWeight: 900,
-                        display: "-webkit-box",
-                        WebkitBoxOrient: "vertical",
-                        WebkitLineClamp: 2,
-                        overflow: "hidden",
-                      }}
-                    >
-                      {recommendation.product.name}
-                    </Typography>
-
-                    {/* 品牌 / 分類 */}
-                    <Typography color="text.secondary" variant="caption">
-                      {recommendation.product.brand} · {recommendation.product.category}
-                    </Typography>
-
-                    {/* 價格 */}
-                    <Typography color="error.main" variant="body2" sx={{ fontWeight: 900 }}>
-                      {priceFormatter.format(recommendation.product.price)}
-                    </Typography>
-
-                    {/* 推薦理由（最多顯示 2 條） */}
-                    <Stack spacing={0.5} sx={{ mt: "auto" }}>
-                      {recommendation.reasons.slice(0, 2).map((reason) => (
+        {/* 橫式卡片列（Skeleton 或真實資料） */}
+        <Box
+          aria-label="推薦商品列表"
+          sx={{
+            display: "flex",
+            gap: 1.5,
+            overflowX: "auto",
+            pb: 1,
+            "&::-webkit-scrollbar": { height: 6 },
+            "&::-webkit-scrollbar-track": { borderRadius: 3, bgcolor: "action.hover" },
+            "&::-webkit-scrollbar-thumb": { borderRadius: 3, bgcolor: "success.light" },
+          }}
+        >
+          {isLoading
+            ? Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)
+            : recommendations.map((recommendation) => {
+                const scorePercent = Math.min(
+                  Math.round((recommendation.score / MAX_SCORE) * 100),
+                  100,
+                );
+                return (
+                  <Card
+                    key={recommendation.product.id}
+                    variant="outlined"
+                    sx={{
+                      borderRadius: 2,
+                      flexShrink: 0,
+                      width: 200,
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <CardContent sx={{ p: 1.5, "&:last-child": { pb: 1.5 }, flexGrow: 1 }}>
+                      <Stack spacing={1} sx={{ height: "100%" }}>
+                        {/* 商品名稱 */}
                         <Typography
-                          key={reason}
-                          color="text.secondary"
-                          variant="caption"
+                          component="h3"
+                          variant="body2"
                           sx={{
+                            fontWeight: 900,
                             display: "-webkit-box",
                             WebkitBoxOrient: "vertical",
-                            WebkitLineClamp: 1,
+                            WebkitLineClamp: 2,
                             overflow: "hidden",
                           }}
                         >
-                          · {reason}
+                          {recommendation.product.name}
                         </Typography>
-                      ))}
-                    </Stack>
-                  </Stack>
-                </CardContent>
-              </Card>
-            ))}
-          </Box>
-        ) : null}
+
+                        {/* 品牌 / 分類 */}
+                        <Typography color="text.secondary" variant="caption">
+                          {recommendation.product.brand} · {recommendation.product.category}
+                        </Typography>
+
+                        {/* 價格 */}
+                        <Typography color="error.main" variant="body2" sx={{ fontWeight: 900 }}>
+                          {priceFormatter.format(recommendation.product.price)}
+                        </Typography>
+
+                        {/* 推薦分數條 */}
+                        <Box>
+                          <Stack
+                            sx={{
+                              alignItems: "center",
+                              flexDirection: "row",
+                              justifyContent: "space-between",
+                              mb: 0.5,
+                            }}
+                          >
+                            <Typography color="text.secondary" variant="caption">
+                              推薦分數
+                            </Typography>
+                            <Typography
+                              color="success.main"
+                              variant="caption"
+                              sx={{ fontWeight: 700 }}
+                            >
+                              {recommendation.score}
+                            </Typography>
+                          </Stack>
+                          <LinearProgress
+                            color="success"
+                            value={scorePercent}
+                            variant="determinate"
+                            sx={{ borderRadius: 1, height: 5 }}
+                          />
+                        </Box>
+
+                        {/* 推薦理由（全部顯示） */}
+                        <Stack spacing={0.5} sx={{ mt: "auto" }}>
+                          {recommendation.reasons.map((reason) => (
+                            <Typography
+                              key={reason}
+                              color="text.secondary"
+                              variant="caption"
+                              sx={{
+                                display: "-webkit-box",
+                                WebkitBoxOrient: "vertical",
+                                WebkitLineClamp: 2,
+                                overflow: "hidden",
+                              }}
+                            >
+                              · {reason}
+                            </Typography>
+                          ))}
+                        </Stack>
+                      </Stack>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+        </Box>
       </Stack>
     </Paper>
   );

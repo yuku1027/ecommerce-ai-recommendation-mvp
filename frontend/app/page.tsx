@@ -4,7 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 import { AppFooter } from "@/components/AppFooter";
 import { AppHeader } from "@/components/AppHeader";
 import { BehaviorPanel } from "@/components/BehaviorPanel";
+import { CartDrawer } from "@/components/CartDrawer";
 import { CategoryFilter } from "@/components/CategoryFilter";
+import { ProductDetailModal } from "@/components/ProductDetailModal";
 import { ProductGrid } from "@/components/ProductGrid";
 import { RecommendationSection } from "@/components/RecommendationSection";
 import { SearchBar } from "@/components/SearchBar";
@@ -34,6 +36,8 @@ export default function Home() {
   const [cartProductIds, setCartProductIds] = useState<string[]>([]);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [hasLoadedTheme, setHasLoadedTheme] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const { data: products = [], isLoading: isProductsLoading, error: productsError } = useProductsQuery();
   const {
@@ -90,6 +94,11 @@ export default function Home() {
     [viewedProducts],
   );
 
+  const cartProducts = useMemo(
+    () => products.filter((p) => cartProductIds.includes(p.id)),
+    [products, cartProductIds],
+  );
+
   const filteredProducts = useMemo(() => {
     const keyword = confirmedKeyword.trim().toLowerCase();
     return products.filter((product) => {
@@ -126,10 +135,15 @@ export default function Home() {
     };
   }
 
-  function handleViewProduct(product: Product) {
+  function handleOpenDetail(product: Product) {
     const newViewed = [product, ...viewedProducts.filter((p) => p.id !== product.id)];
     setViewedProducts(newViewed);
+    setSelectedProduct(product);
     fetchRecommendations(buildRequest({ viewedProductIds: newViewed.map((p) => p.id) }));
+  }
+
+  function handleCloseDetail() {
+    setSelectedProduct(null);
   }
 
   function handleAddToCart(product: Product) {
@@ -145,6 +159,17 @@ export default function Home() {
         cartProductIds: newCartIds,
       }),
     );
+  }
+
+  function handleRemoveFromCart(productId: string) {
+    const newCartIds = cartProductIds.filter((id) => id !== productId);
+    setCartProductIds(newCartIds);
+    fetchRecommendations(buildRequest({ cartProductIds: newCartIds }));
+  }
+
+  function handleClearCart() {
+    setCartProductIds([]);
+    fetchRecommendations(buildRequest({ cartProductIds: [] }));
   }
 
   function handleSearch(keyword: string) {
@@ -166,7 +191,12 @@ export default function Home() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box sx={{ minHeight: "100svh", bgcolor: "background.default" }}>
-        <AppHeader isDarkMode={isDarkMode} onToggleTheme={() => setIsDarkMode((v) => !v)} />
+        <AppHeader
+          cartCount={cartProductIds.length}
+          isDarkMode={isDarkMode}
+          onOpenCart={() => setIsCartOpen(true)}
+          onToggleTheme={() => setIsDarkMode((v) => !v)}
+        />
 
         <Container component="main" maxWidth={false} sx={{ maxWidth: 1440, py: { xs: 2, md: 3 } }}>
           <Stack spacing={2.5}>
@@ -233,7 +263,7 @@ export default function Home() {
                     products={filteredProducts}
                     viewedProductIds={viewedProductIds}
                     onAddToCart={handleAddToCart}
-                    onViewProduct={handleViewProduct}
+                    onOpenDetail={handleOpenDetail}
                   />
                 </Box>
               </Stack>
@@ -244,6 +274,21 @@ export default function Home() {
         </Container>
 
         <AppFooter apiBaseUrl={getApiBaseUrl()} />
+
+        <CartDrawer
+          open={isCartOpen}
+          cartProducts={cartProducts}
+          onClose={() => setIsCartOpen(false)}
+          onRemove={handleRemoveFromCart}
+          onClearCart={handleClearCart}
+        />
+
+        <ProductDetailModal
+          product={selectedProduct}
+          isInCart={selectedProduct ? cartProductIds.includes(selectedProduct.id) : false}
+          onClose={handleCloseDetail}
+          onAddToCart={handleAddToCart}
+        />
       </Box>
     </ThemeProvider>
   );
