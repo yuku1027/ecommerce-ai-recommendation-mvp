@@ -7,6 +7,14 @@ export type Recommendation = {
   matchedRules: string[];
 };
 
+export type RecommendationRequest = {
+  viewedProductIds: string[];
+  cartProductIds: string[];
+  searchKeyword?: string;
+  preferredCategory?: string;
+  preferredBrand?: string;
+};
+
 export type BehaviorState = {
   viewedProducts: Product[];
   searchKeyword: string;
